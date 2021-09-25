@@ -1,0 +1,35 @@
+$msgFontSize: 16px;
+$msgMinWidth: 120px;
+
+.msgSuccess{
+    .ant-message-notice-content{
+        background-color: rgb(240,249,235);
+        color: rgb(103,194,58);
+        min-width: $msgMinWidth;
+        font-size: $msgFontSize;
+    }
+}
+.msgWarning{
+    .ant-message-notice-content{
+        background-color: rgb(253,246,236);
+        color: rgb(230,162,60);
+        min-width: $msgMinWidth;
+        font-size: $msgFontSize;
+    }
+}
+.msgInfo{
+    .ant-message-notice-content{
+        background-color: rgb(237,242,252);
+        color: rgb(144,147,153);
+        min-width: $msgMinWidth;
+        font-size: $msgFontSize;
+    }
+}
+.msgError{
+    .ant-message-notice-content{
+        background-color: rgb(254,240,240);
+        color: rgb(245,108,108);
+        min-width: $msgMinWidth;
+        font-size: $msgFontSize;
+    }
+}
