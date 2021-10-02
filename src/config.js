@@ -1,10 +1,12 @@
 import store from 'store'
+import expirePlugin from 'store/plugins/expire'
 import axios from 'axios'
 import {message} from 'antd'
 import {InfoCircleFilled} from '@ant-design/icons'
 import 'antd/dist/antd.css'
 
-import expirePlugin from 'store/plugins/expire'
+const 
+    serverURL = 'http://127.0.0.1:8000';
 
 
 (function handleStore(){
@@ -69,6 +71,38 @@ import expirePlugin from 'store/plugins/expire'
 })();
 
 (function handleAxios(){
-    axios.defaults.baseURL = 'http://127.0.0.1:8000'
+    axios.defaults.baseURL = serverURL
+    axios.interceptors.request.use(
+        config => {
+            config.headers.Authorization = store.get('token')
+            // config.headers['Content-Type'] = 'application/json'
+            return config
+        },
+    )
+    axios.interceptors.response.use(
+        response => {
+            return response
+        },
+        error => {
+            const code = error.response && error.response.status;
+            console.log(1)
+            if(code === 401){ // 请求要求用户的身份认证
+                message.error("未登录")
+            } else if (code === 403) { // 服务器拒绝执行此请求
+                message.error('权限不够')
+            } else if (code === 404) { // 服务器无法根据客户端的请求找到资源（网页）
+                message.error('这里空空如也')
+            } else if (code === 430) { // active token失效，此处应当带着refresh token重新请求一次
+
+            } else if (code === 431) { // refresh token失效
+                message.error('请重新登录')
+            } else if (code === 500) { // 服务器内部错误，无法完成请求
+                message.error('服务繁忙')
+            } else { // 未知错误
+                message.error('未知错误')
+            }
+            return Promise.reject(error)
+        }
+    )
 })();
 

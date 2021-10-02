@@ -1,0 +1,25 @@
+.userTool {
+    // background-color: white;
+    width: 270px;
+    border-radius: 10px;
+    span {
+        margin: 10px;
+        cursor: pointer;
+    }
+}
+.ant-tooltip {
+    
+    // .ant-tooltip-arrow-content {
+    //     // background-color: white !important;
+    // }
+    .ant-tooltip-inner {
+        padding: 0 !important;
+        border-radius: 10px;
+        width: 270px;
+    }
+}
+
+
+.userAvatar {
+    cursor: pointer;
+}

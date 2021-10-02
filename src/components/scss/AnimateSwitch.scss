@@ -1,0 +1,31 @@
+// 很多动画都需要给路由对应组件最外层元素设置position: absolute;
+/* .route {
+    position: absolute;
+    left    : 0;
+    top     : 0;
+    width   : 100%;
+    height  : 100%;
+} */
+
+// 帧动画
+.fade-enter { // 要进来的页面
+    opacity  : 0;
+    transform: translateX(-100%);
+}
+
+.fade-enter.fade-enter-active { // 正在进来
+    opacity   : 1;
+    transform : translateX(0);
+    transition: all 0.3s ease-in; // 0.3s：过渡时间，最好和 AnimateSwitch.js 中的对应上
+}
+
+.fade-exit {
+    opacity  : 1;
+    transform: translateX(0);
+}
+
+.fade-exit.fade-exit-active {
+    opacity   : 0;
+    transform : translateX(-100%);
+    transition: all 0.3s ease-out;
+}

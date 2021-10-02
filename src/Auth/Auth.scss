@@ -1,0 +1,26 @@
+.unLogin {
+    color: gray;
+    font-size: 22px;
+    cursor: pointer;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    span {
+        color: white;
+        transition: all 0.5s ease;
+        &:hover{
+            color: #58B2DC;
+        }
+    }
+}
+.loginForm{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 360px;
+    button {
+        width: 100%;
+    }
+}
