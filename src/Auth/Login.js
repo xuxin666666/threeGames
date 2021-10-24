@@ -1,5 +1,5 @@
 // 登陆界面
-
+import store from 'store'
 import { Form, Input, Button, Checkbox } from 'antd';
 import {Link} from 'react-router-dom'
 
@@ -7,6 +7,14 @@ import {User, Lock} from '../components/Icons'
 import './Auth.scss'
 
 const Login = () => {
+
+
+    const asd = () => {
+        var l = store.get('login')
+        console.log(l)
+        store.set('login', !l)
+    }
+
     const onFinish = (values) => { // 表单验证成功了
         console.log('Success:', values);
     };
@@ -15,8 +23,14 @@ const Login = () => {
         console.log('Failed:', errorInfo);
     };
 
+    const loca = {
+        pathname: './register',
+        state: {from: '/login'}
+    }
+
     return (
         <div className="AnimateRoute">
+        <button onClick={asd}>haha</button>
             <Form
                 className="loginForm"
                 initialValues={{
@@ -73,7 +87,7 @@ const Login = () => {
                         <Checkbox>30天内自动登录</Checkbox>
                     </Form.Item>
                     
-                    <Link to="/register" style={{float: "right"}}>注册用户</Link>
+                    <Link to={loca} style={{float: "right"}} >注册用户</Link>
                 </Form.Item>
 
                 <Form.Item>

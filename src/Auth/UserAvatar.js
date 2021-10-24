@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { Avatar, Tooltip } from 'antd'
 
-import './scss/UserAvatar.scss'
+import './UserAvatar.scss'
 
 const ImgAvatars = [ // 头像列表
     '/assert/user/avatar_1.png',

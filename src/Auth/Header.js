@@ -8,7 +8,7 @@ import './Auth.scss'
 
 const Header = ({ logined }) => {
     return (
-        <div>
+        <div className='authHeader'>
             {
                 logined ? (
                     <div>

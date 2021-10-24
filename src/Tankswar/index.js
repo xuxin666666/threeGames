@@ -1,3 +1,4 @@
+import { Spin } from "antd"
 
 
 const TanksWar = () => {
@@ -5,6 +6,7 @@ const TanksWar = () => {
     return (
         <>
             TanksWar
+            {/* <Spin size='large' /> */}
         </>
     )
 }

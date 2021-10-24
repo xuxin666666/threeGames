@@ -1,13 +1,24 @@
 // 注册界面
-
+import store from 'store'
+import { useLayoutEffect } from 'react';
 import { Form, Input, Button } from 'antd';
+import { useHistory } from 'react-router-dom';
+
 
 import {User, Lock} from '../components/Icons'
-import UserAvatar from '../components/UserAvatar'
+import UserAvatar from './UserAvatar'
 import './Auth.scss'
 
 
 const Register = () => {
+    let history = useHistory()
+
+    useLayoutEffect(() => {
+        if(store.get('login')) {
+            history.goBack()
+        }
+    }, [history])
+    
 
     const onFinish = (values) => {
         console.log('Success:', values);

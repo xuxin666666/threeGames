@@ -11,6 +11,12 @@ const Home = () => {
     const [maskDisplay, setMaskDisplay] = useState('none') // 控制大遮罩层的展示
     const maskRef = useRef()
 
+    // let history = useHistory()
+    // let location = useLocation()
+    // useEffect(() => {
+    //     console.log(history, location)
+    // })
+
 
     const showMask = useCallback( // 展示大遮罩层并添加动画效果，动画的具体内容在scss中
         (e) => {
