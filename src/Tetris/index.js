@@ -7,7 +7,8 @@ import { message } from 'antd'
 
 import Header from "../Auth/Header"
 import Display from './Display'
-import { useInterval, useEleInterval } from '../hook/useInterval'
+// import { useInterval, useEleInterval } from '../hook/useInterval'
+import { useEleInterval } from '../hook/useInterval'
 import { randomTetrimino } from './Tetrimino'
 import './scss/index.scss'
 
@@ -26,8 +27,8 @@ const getTetri = () => {
 
 const Tetris = () => {
     const Height = 22, Width = 11 // 地图的高、宽
-    const MaxSpeed = 4.5 // 速度最大为4.5格/秒
-    const Interval = 8 // 根据时长更新速度时，每8秒速度增一次
+    const MaxSpeed = 5 // 速度最大为4.5格/秒
+    // const Interval = 8 // 根据时长更新速度时，每8秒速度增一次
 
     const [isStart, setIsStart] = useState(false) // 游戏是否开始
     const [isPause, setIsPause] = useState(false) // 游戏是否暂停
@@ -55,35 +56,19 @@ const Tetris = () => {
     // }, speed < MaxSpeed ? 1000 : null)
 
     useEffect(() => { // 根据得分更新速度
-        if (speed < MaxSpeed) {
-            var spe
-            spe = speed + score / 100
+        var spe = 1
+        if (spe < MaxSpeed) {
+            spe = score / 100 + 1
             if (spe > MaxSpeed) spe = MaxSpeed
             setSpeed(spe)
         }
-    }, [score, speed])
+    }, [score])
+
+    
 
     useEleInterval(() => {
         if (isStart && !isPause && !isGameover) {
-            var cCur = JSON.parse(JSON.stringify(cur)) // 事先拷贝一份，避免直接修改原对象
-            cCur.pos.X++ // 方块掉落一格
-            if (checkEnable(cCur)) {
-                updateStage(cCur)
-                setCur(cCur)
-            } else {
-                if (cur.pos.X <= 0) gameover()
-                else {
-                    var cStage, cNext = JSON.parse(JSON.stringify(next))
-                    cNext.pos.X++
-                    cCur.pos.X--
-                    cCur.moveable = false
-                    cStage = updateStage(cCur, true)
-                    cStage = sweep(cStage)
-                    updateStage(cNext, false, cStage) // 当前方块不动了，提前传入下一个方块到stage
-                    setCur(cNext)
-                    setNext(getTetri())
-                }
-            }
+            drop()
         }
     }, 1000 / speed)
 
@@ -96,6 +81,7 @@ const Tetris = () => {
         setCur(getTetri())
         setNext(getTetri())
         setSpeed(1)
+        setScore(0)
         setStage(Array.from(Array(Height), () => Array(Width).fill({ type: '0', moveable: true })))
 
         timeCount.current = 0
@@ -105,9 +91,10 @@ const Tetris = () => {
 
     // 执行清除操作并计算得分
     const sweep = useCallback((stage) => {
-        var len1 = stage.length, len2 = stage[0].length
-        var i, j, flag, newStage = []
+        var len1 = Height, len2 = Width
+        let i, j, flag, newStage = []
         for (i = 0; i < len1; i++) {
+            // console.log(newStage)
             flag = 1
             for (j = 0; j < len2; j++) {
                 if (stage[i][j].type === '0' || stage[i][j].moveable) {
@@ -118,10 +105,11 @@ const Tetris = () => {
             if (!flag) newStage.push(stage[i]) // 这一行没满，不动
             else {
                 // 满了，丢掉这一行，添加新的行，并计分
-                newStage.unshift(Array(11).fill({ type: '0', moveable: true }))
+                newStage.unshift(Array.from(Array(11), () => ({ type: '0', moveable: true })))
                 setScore(c => c + 10)
-            }
+            }  
         }
+        // return JSON.parse(JSON.stringify(newStage))
         return newStage
     }, [])
 
@@ -157,7 +145,13 @@ const Tetris = () => {
         var index = cur.index, i, j
         var X = cur.pos.X, Y = cur.pos.Y, len = cur.tetri[index].length
         for (i = 0; i < len; i++) {
-            if (i + X < 0) continue // 方块没出来的部分就不管了
+            if (i + X < 0) { // 方块没出来的部分，保证左右不越界就行
+                for(j = 0; j < len; j++){
+                    if(cur.tetri[index][i][j] !== '0' && (Y + j < 0 || Y + j >= Width))
+                        return false
+                }
+                continue
+            } 
             for (j = 0; j < len; j++) {
                 // 当前格子不为'0'时：格子在地图中、格子能动，有一个不满足就返回false
                 if (cur.tetri[index][i][j] !== '0'
@@ -198,6 +192,28 @@ const Tetris = () => {
         }
     }, [checkEnable, updateStage])
 
+    const drop = useCallback(() => {
+        var cCur = JSON.parse(JSON.stringify(cur)) // 事先拷贝一份，避免直接修改原对象
+            cCur.pos.X++ // 方块掉落一格
+            if (checkEnable(cCur)) {
+                updateStage(cCur)
+                setCur(cCur)
+            } else {
+                if (cur.pos.X <= 0) gameover()
+                else {
+                    var cStage, cNext = JSON.parse(JSON.stringify(next))
+                    cNext.pos.X++
+                    cCur.pos.X--
+                    cCur.moveable = false
+                    cStage = updateStage(cCur, true)
+                    cStage = sweep(cStage)
+                    updateStage(cNext, false, cStage) // 当前方块不动了，提前传入下一个方块到stage
+                    setCur(cNext)
+                    setNext(getTetri())
+                }
+            }
+    }, [cur, next, checkEnable, updateStage, sweep])
+
     useEffect(() => {
         // 操作部分
         // mousedown事件设置了interval循环调用函数，确保每次函数都是最新的
@@ -224,17 +240,13 @@ const Tetris = () => {
                     }
                     break
                 case 'down': // 往下移一格
-                    c.pos.X++
-                    if (checkEnable(c)) {
-                        updateStage(c)
-                        setCur(c)
-                    }
+                    drop()
                     break
                 default:
                     throw new Error("wrong type: ", type)
             }
         }
-    }, [cur, isStart, isPause, isGameover, checkEnable, updateStage, rotate])
+    }, [cur, isStart, isPause, isGameover, checkEnable, updateStage, rotate, drop])
 
     // 鼠标长按能快速多次操作
     const continueOpera = useCallback((type, e) => {
