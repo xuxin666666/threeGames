@@ -1,0 +1,15 @@
+.mineSweepMainContent {
+    width: 900px;
+    height: 480px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 30px;
+    display: grid;
+    grid-template-columns: repeat(30, 1fr);
+    grid-template-rows: repeat(16, 1fr);
+    box-sizing: content-box;
+    border: 3px black solid;
+    cursor: pointer;
+    // grid-gap: 1px;
+}

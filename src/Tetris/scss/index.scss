@@ -1,7 +1,7 @@
 .tetrisHeader {
     // color: rgba($color: black, $alpha: 0.9);
     background-color: skyblue;
-    height          : auto;
+    height          : 40px;
     display         : inline-block;
     width           : 100%;
     // position: absolute;
@@ -76,7 +76,7 @@
         }
 
         &:active {
-            transform: scale(1.05);
+            transform: scale(0.95);
         }
     }
 

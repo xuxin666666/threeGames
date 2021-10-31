@@ -1,25 +1,35 @@
-.userTool {
-    // background-color: white;
-    width: 270px;
-    border-radius: 10px;
-    span {
-        margin: 10px;
+// .userAvatar {
+    
+    
+    
+    
+    .avatar {
         cursor: pointer;
     }
-}
+// }
+
+
 .ant-tooltip {
+    max-width: unset !important;
     
     // .ant-tooltip-arrow-content {
     //     // background-color: white !important;
     // }
+    
     .ant-tooltip-inner {
-        padding: 0 !important;
+        // padding: 0 !important;
         border-radius: 10px;
-        width: 270px;
+        // width: 270px;
+        width: auto;
+        .userTool {
+            // background-color: white;
+            width: 260px;
+            border-radius: 10px;
+            span {
+                margin: 10px;
+                cursor: pointer;
+            }
+            
+        }
     }
-}
-
-
-.userAvatar {
-    cursor: pointer;
 }

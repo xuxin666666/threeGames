@@ -57,7 +57,7 @@ const UserAvatar = ({ size, index, shape, value, onChange }) => {
     }
 
     return (
-        <div>
+        <div className='userAvatar'>
             <Tooltip
                 trigger="click"
                 color="white"
@@ -81,7 +81,7 @@ const UserAvatar = ({ size, index, shape, value, onChange }) => {
 
             >
                 <Avatar
-                    className="userAvatar"
+                    className="avatar"
                     shape={shape || 'circle'}
                     size={size || 32}
                     src={ImgAvatars[user]}

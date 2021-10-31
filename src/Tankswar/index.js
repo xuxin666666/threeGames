@@ -1,11 +1,11 @@
-import { Spin } from "antd"
+import { Slider, Spin } from "antd"
 
 
 const TanksWar = () => {
 
     return (
         <>
-            TanksWar
+            <Slider defaultValue={60} style={{width: '100px'}} />
             {/* <Spin size='large' /> */}
         </>
     )
