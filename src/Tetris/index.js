@@ -4,13 +4,18 @@
 import store from 'store'
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { message } from 'antd'
+import { ArrowLeftOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 
 import Header from "../Auth/Header"
 import Display from './Display'
+import PaiMeng from '../components/PaiMeng'
 // import { useInterval, useEleInterval } from '../hook/useInterval'
 import { useEleInterval } from '../hook/useInterval'
 import { randomTetrimino } from './Tetrimino'
 import './scss/index.scss'
+
+
 
 // 获取新的方块，返回新的方块和一些其他信息
 const getTetri = () => {
@@ -64,7 +69,7 @@ const Tetris = () => {
         }
     }, [score])
 
-    
+
 
     useEleInterval(() => {
         if (isStart && !isPause && !isGameover) {
@@ -107,7 +112,7 @@ const Tetris = () => {
                 // 满了，丢掉这一行，添加新的行，并计分
                 newStage.unshift(Array.from(Array(11), () => ({ type: '0', moveable: true })))
                 setScore(c => c + 10)
-            }  
+            }
         }
         // return JSON.parse(JSON.stringify(newStage))
         return newStage
@@ -146,12 +151,12 @@ const Tetris = () => {
         var X = cur.pos.X, Y = cur.pos.Y, len = cur.tetri[index].length
         for (i = 0; i < len; i++) {
             if (i + X < 0) { // 方块没出来的部分，保证左右不越界就行
-                for(j = 0; j < len; j++){
-                    if(cur.tetri[index][i][j] !== '0' && (Y + j < 0 || Y + j >= Width))
+                for (j = 0; j < len; j++) {
+                    if (cur.tetri[index][i][j] !== '0' && (Y + j < 0 || Y + j >= Width))
                         return false
                 }
                 continue
-            } 
+            }
             for (j = 0; j < len; j++) {
                 // 当前格子不为'0'时：格子在地图中、格子能动，有一个不满足就返回false
                 if (cur.tetri[index][i][j] !== '0'
@@ -194,24 +199,24 @@ const Tetris = () => {
 
     const drop = useCallback(() => {
         var cCur = JSON.parse(JSON.stringify(cur)) // 事先拷贝一份，避免直接修改原对象
-            cCur.pos.X++ // 方块掉落一格
-            if (checkEnable(cCur)) {
-                updateStage(cCur)
-                setCur(cCur)
-            } else {
-                if (cur.pos.X <= 0) gameover()
-                else {
-                    var cStage, cNext = JSON.parse(JSON.stringify(next))
-                    cNext.pos.X++
-                    cCur.pos.X--
-                    cCur.moveable = false
-                    cStage = updateStage(cCur, true)
-                    cStage = sweep(cStage)
-                    updateStage(cNext, false, cStage) // 当前方块不动了，提前传入下一个方块到stage
-                    setCur(cNext)
-                    setNext(getTetri())
-                }
+        cCur.pos.X++ // 方块掉落一格
+        if (checkEnable(cCur)) {
+            updateStage(cCur)
+            setCur(cCur)
+        } else {
+            if (cur.pos.X <= 0) gameover()
+            else {
+                var cStage, cNext = JSON.parse(JSON.stringify(next))
+                cNext.pos.X++
+                cCur.pos.X--
+                cCur.moveable = false
+                cStage = updateStage(cCur, true)
+                cStage = sweep(cStage)
+                updateStage(cNext, false, cStage) // 当前方块不动了，提前传入下一个方块到stage
+                setCur(cNext)
+                setNext(getTetri())
             }
+        }
     }, [cur, next, checkEnable, updateStage, sweep])
 
     useEffect(() => {
@@ -305,10 +310,15 @@ const Tetris = () => {
     }, [onKeyDown, clearMouseDown])
 
     return (
-        <div style={{ position: 'relative', height: '100vh' }}>
-            <header className='tetrisHeader'>
+        <div className='tetris'>
+
+            {/* <iframe src='/IslandAndStore/index.html' title='IslandAndStore' width='100%' height='100%' style={{position: 'fixed', top: '0', left: '0', border: 'none'}} /> */}
+            <div className='tetrisHeader'>
+                <Link to={'/'} className="link" ><ArrowLeftOutlined /></Link>
                 <Header logined={store.get('login')} />
-            </header>
+            </div>
+
+
             <div className='tetrisMain'>
                 <div className="tetrisContent">
                     {
@@ -388,6 +398,10 @@ const Tetris = () => {
                             <div>S/&darr;</div>
                         </div>
                     </div>
+                </div>
+
+                <div className='tetrisPaimeng'>
+                    <PaiMeng />
                 </div>
             </div>
         </div>

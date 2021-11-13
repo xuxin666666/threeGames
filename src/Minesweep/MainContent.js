@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { CeilCommon, CeilDark, CeilNotReverse, CeilFlag, CeilMine } from './Ceil'
 import { playAudio } from "../utils"
 import './scss/MainContent.scss'
+import { message } from "antd"
 
 const Width = 30, Height = 16, MineNumber = 99
 const MainContent = ({ state, dispatch, callback }) => {
@@ -110,6 +111,7 @@ const MainContent = ({ state, dispatch, callback }) => {
             if(mineFlag) setStage([...stage])
         }, 500)
         setTimeout(() => { // 1.5s后播放游戏结束音频
+            message.info('失败')
             playAudio('mineSweep', 'gameover.mp3', sound)
         }, 1500)
         setTimeout(() => { // 3.3s后重新开局
@@ -134,6 +136,7 @@ const MainContent = ({ state, dispatch, callback }) => {
             setStage(stage)
         }, 600)
         setTimeout(() => { // 1.6s后播放获胜音频
+            message.success('获胜')
             playAudio('mineSweep', 'win.mp3', sound)
         }, 1600)
         setTimeout(() => { // 3.6s后重新开局

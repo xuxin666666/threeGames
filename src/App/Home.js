@@ -4,11 +4,15 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom"
 
 import Header from "../Auth/Header"
+import IslandAndStore from "../components/IslandAndStone";
 import Mask from "../components/Mask";
+import WordRain from "../components/WordRain";
 import './App.scss'
 
 const Home = () => {
     const [maskDisplay, setMaskDisplay] = useState('none') // 控制大遮罩层的展示
+    const [wordRainVis, setWordRainVis] = useState(false)
+    const [scene, setScene] = useState(1)
     const maskRef = useRef()
 
     // let history = useHistory()
@@ -21,6 +25,7 @@ const Home = () => {
     const showMask = useCallback( // 展示大遮罩层并添加动画效果，动画的具体内容在scss中
         (e) => {
             setMaskDisplay('block')
+            setWordRainVis(true)
             maskRef.current.style.animation = "graduationBigger 0.5s"
             e.stopPropagation();
         },
@@ -32,6 +37,7 @@ const Home = () => {
             // 如果遮罩层显示了，且是在遮罩层外点击
             if (maskDisplay === 'block' && maskRef.current && !maskRef.current.contains(e.target)) {
                 setMaskDisplay('none')
+                setWordRainVis(false)
             }
         },
         [maskDisplay]
@@ -44,12 +50,28 @@ const Home = () => {
         }
     }, [listenBegin])
 
+    const controlScene = () => {
+        if (scene === 1) setScene(2)
+        else if (scene === 2) setScene(1)
+    }
+
     return (
         <div className="AnimateRoute">
             <header className="homeHeader">
+                <span onClick={controlScene}>切换场景</span>
                 <Header logined={false} />
             </header>
-            <img src="/assert/homeBG.jpg" alt="img" className="homeBG" />
+            {
+                scene === 1 ? (
+                    <div>
+                        <img src="/assert/homeBG.jpg" alt="img" className="homeBG" />
+                        <WordRain visible={wordRainVis} />
+                    </div>
+                ) : (
+                    <IslandAndStore zIndex={-1} />
+                )
+            }
+
 
             <div className="homeContent">
                 <p>话不多说</p>
@@ -84,6 +106,7 @@ const Home = () => {
                     </div>
                 </div>
             </Mask>
+
         </div>
     )
 }

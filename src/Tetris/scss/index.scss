@@ -1,210 +1,247 @@
-.tetrisHeader {
-    // color: rgba($color: black, $alpha: 0.9);
-    background-color: skyblue;
-    height          : 40px;
-    display         : inline-block;
-    width           : 100%;
-    // position: absolute;
-}
+.tetris {
+    position   : relative;
+    height     : 100vh;
+    user-select: none;
+    min-width  : 800px;
 
-.tetrisMain {
-    // height: 540px;
-    width         : 540px;
-    display       : flex;
-    flex-direction: row;
-    position      : relative;
-    left          : 50%;
-    top           : 10px;
-    transform     : translateX(-50%);
-    border        : lightblue 1px solid;
-    box-sizing    : content-box;
-}
+    .tetrisHeader {
+        // color: rgba($color: black, $alpha: 0.9);
+        background-color: skyblue;
+        height          : 40px;
+        display         : inline-block;
+        width           : 100%;
+        z-index         : 10;
+        position        : relative;
 
-.tetrisContent {
-    border-right: 1px dashed gray;
-    box-sizing  : content-box;
-    width  : 275px;
-    height : 550px;
-
-    .tetrisPaused {
-        padding: 5px;
-        width  : 275px;
-
-        img {
-            width: 100%;
-        }
-
-        text-align : center;
-        position   : relative;
-        top        : 50%;
-        // left: 50%;
-        transform  : translateY(-50%);
-    }
-}
-
-.tetrisSlide {
-    position: relative;
-    width   : 100%;
-
-    .nextBlock {
-        font-size : 30px;
-        color     : lightgreen;
-        text-align: center;
-    }
-
-    .tetrisSlidePreview {
-        margin-top: 20px;
-        height    : 100px;
-
-        >div {
-            position : relative;
-            left     : 50%;
-            transform: translateX(-50%);
+        .link {
+            font-size        : 30px;
+            line-height      : 40px;
+            // display       : inline-block;
+            vertical-align   : top;
+            margin-left      : 20px;
         }
     }
 
-    .start {
-        margin-top   : 30px;
-        cursor       : pointer;
-        text-align   : center;
-        user-select: none;
-        // transition: all 0.5s ease;
-
-        &::after {
-            content: "space";
-            display: block;
-        }
-
-        &:active {
-            transform: scale(0.95);
-        }
+    .tetrisMain {
+        // height: 540px;
+        width           : 540px;
+        display         : flex;
+        flex-direction  : row;
+        position        : relative;
+        top             : 10px;
+        // left: 10px;
+        left            : 36%;
+        transform       : translateX(-50%);
+        border          : lightblue 1px solid;
+        box-sizing      : content-box;
+        background-color: white;
     }
 
-    .operation {
-        margin-top : 20px;
-        font-weight: 600;
-        font-size  : 16px;
+    .tetrisContent {
+        border-right: 1px dashed gray;
+        box-sizing  : content-box;
+        width       : 275px;
+        height      : 550px;
 
-        img {
-            width : 60px;
-            cursor: pointer;
-            user-select: none;
+        .tetrisPaused {
+            padding: 5px;
+            width  : 275px;
 
-            &:active {
-                transform: scale(1.05);
-            }
-        }
-
-        span {
-            font-size: 24px;
-        }
-
-        .up {
             img {
-                left    : 39%;
-                position: relative;
+                width: 100%;
             }
+
+            text-align : center;
+            position   : relative;
+            top        : 50%;
+            // left: 50%;
+            transform  : translateY(-50%);
+        }
+    }
+
+    .tetrisSlide {
+        position: relative;
+        width   : 264px;
+
+        .nextBlock {
+            font-size : 30px;
+            color     : lightgreen;
+            text-align: center;
+        }
+
+        .tetrisSlidePreview {
+            margin-top: 20px;
+            height    : 100px;
 
             >div {
-                display : inline-block;
-                left    : 43%;
-                position: relative;
-            }
-
-            &::after {
-                content      : "";
-                width        : 0;
-                height       : 0;
-                border-left  : 6px solid transparent;
-                border-right : 6px solid transparent;
-                border-bottom: 12px solid black;
-                display      : block;
-                left         : 50%;
-                transform    : translateX(-50%);
-                position     : relative;
-                top          : 10px;
+                position : relative;
+                left     : 50%;
+                transform: translateX(-50%);
             }
         }
 
-        .middle {
-            display        : flex;
-            justify-content: space-around;
-            margin-top     : 2px;
+        .start {
+            margin-top   : 30px;
+            cursor       : pointer;
+            text-align   : center;
+            user-select  : none;
+            // transition: all 0.5s ease;
 
-            .left {
-                position: relative;
+            &::after {
+                content: "space";
+                display: block;
+            }
+
+            &:active {
+                transform: scale(0.95);
+            }
+        }
+
+        .operation {
+            margin-top : 20px;
+            font-weight: 600;
+            font-size  : 16px;
+
+            img {
+                width      : 60px;
+                cursor     : pointer;
+                user-select: none;
+
+                &:active {
+                    transform: scale(1.05);
+                }
+            }
+
+            span {
+                font-size: 24px;
+            }
+
+            .up {
+                img {
+                    left    : 39%;
+                    position: relative;
+                }
 
                 >div {
-                    position : absolute;
-                    left     : 40%;
-                    transform: translateX(-50%);
+                    display : inline-block;
+                    left    : 43%;
+                    position: relative;
                 }
 
                 &::after {
-                    content         : "";
-                    width           : 0;
-                    height          : 0;
-                    border-top      : 6px solid transparent;
-                    border-right    : 12px solid black;
-                    border-bottom   : 6px solid transparent;
-                    display         : inline-block;
-                    // left         : 50%;
-                    // transform    : translateX(-50%);
-                    position        : relative;
-                    left            : 10px;
+                    content      : "";
+                    width        : 0;
+                    height       : 0;
+                    border-left  : 6px solid transparent;
+                    border-right : 6px solid transparent;
+                    border-bottom: 12px solid black;
+                    display      : block;
+                    left         : 50%;
+                    transform    : translateX(-50%);
+                    position     : relative;
+                    top          : 10px;
                 }
             }
 
-            .right {
+            .middle {
+                display        : flex;
+                justify-content: space-around;
+                margin-top     : 2px;
+
+                .left {
+                    position: relative;
+
+                    >div {
+                        position : absolute;
+                        left     : 40%;
+                        transform: translateX(-50%);
+                    }
+
+                    &::after {
+                        content         : "";
+                        width           : 0;
+                        height          : 0;
+                        border-top      : 6px solid transparent;
+                        border-right    : 12px solid black;
+                        border-bottom   : 6px solid transparent;
+                        display         : inline-block;
+                        // left         : 50%;
+                        // transform    : translateX(-50%);
+                        position        : relative;
+                        left            : 10px;
+                    }
+                }
+
+                .right {
+                    >div {
+                        left         : 45%;
+                        position     : relative;
+                        // text-align: center;
+                    }
+
+                    &::before {
+                        content         : "";
+                        width           : 0;
+                        height          : 0;
+                        border-top      : 6px solid transparent;
+                        border-left     : 12px solid black;
+                        border-bottom   : 6px solid transparent;
+                        display         : inline-block;
+                        // left         : 50%;
+                        // transform    : translateX(-50%);
+                        position        : relative;
+                        right           : 10px;
+                    }
+                }
+            }
+
+            .down {
+                margin-top: -26px;
+
+                img {
+                    left    : 39%;
+                    position: relative;
+                }
+
                 >div {
-                    left         : 45%;
-                    position     : relative;
-                    // text-align: center;
+                    display : inline-block;
+                    left    : 43%;
+                    position: relative;
                 }
 
                 &::before {
-                    content         : "";
-                    width           : 0;
-                    height          : 0;
-                    border-top      : 6px solid transparent;
-                    border-left     : 12px solid black;
-                    border-bottom   : 6px solid transparent;
-                    display         : inline-block;
-                    // left         : 50%;
-                    // transform    : translateX(-50%);
-                    position        : relative;
-                    right           : 10px;
+                    content     : "";
+                    width       : 0;
+                    height      : 0;
+                    border-left : 6px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-top  : 12px solid black;
+                    display     : block;
+                    left        : 50%;
+                    transform   : translateX(-50%);
+                    position    : relative;
+                    bottom      : 10px;
                 }
             }
         }
+    }
 
-        .down {
-            margin-top: -26px;
+    .tetrisPaimeng {
+        position: absolute;
+        // right: 10px;
+        left    : 580px;
+        bottom  : 10%;
+    }
 
-            img {
-                left    : 39%;
-                position: relative;
-            }
+    @media screen and (min-width: 900px) {
+        .tetrisMain {
+            left: 40%;
+        }
+    }
 
-            >div {
-                display : inline-block;
-                left    : 43%;
-                position: relative;
-            }
-
-            &::before {
-                content     : "";
-                width       : 0;
-                height      : 0;
-                border-left : 6px solid transparent;
-                border-right: 6px solid transparent;
-                border-top  : 12px solid black;
-                display     : block;
-                left        : 50%;
-                transform   : translateX(-50%);
-                position    : relative;
-                bottom      : 10px;
-            }
+    @media screen and (min-width: 1100px) {
+        .tetrisMain {
+            left: 50%;
         }
     }
 }

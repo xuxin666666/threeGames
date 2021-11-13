@@ -6,9 +6,14 @@ import './scss/FlyingFish.scss'
 
 const FlyingFish = () => {
     const container = useRef()
+    const rafId = useRef()
 
     useEffect(() => {
         mainJS()
+        return () => {
+            // 清除canvas动画，不然即使该dom部分被销毁，动画也会执行下去
+            window.cancelAnimationFrame(rafId.current) 
+        }
     }, [])
 
     const mainJS = () => {
@@ -83,7 +88,7 @@ const FlyingFish = () => {
                 this.clearTimer();
                 this.tmpWidth = this.$window.offsetWidth;
                 this.tmpHeight = this.$window.offsetWidth;
-                this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL));
+                this.watchIds.push(setTimeout(this.jdugeToStopResize, 10));
             },
             clearTimer: function () {
                 while (this.watchIds.length > 0) {
@@ -103,10 +108,11 @@ const FlyingFish = () => {
                 }
             },
             bindEvent: function () {
-                this.$window.onresize = this.watchWindowSize;
+                this.$window.addEventListener('resize', this.watchWindowSize)
+                // this.$window.onresize = this.watchWindowSize;
                 this.$container.onmouseenter = this.startEpicenter;
                 this.$container.onmousemove = this.moveEpicenter;
-                this.$container.onclick = this.reverseVertical;
+                // this.$container.onclick = this.reverseVertical;
             },
             getAxis: function (event) {
                 var offset = this.offset(this.$container);
@@ -130,16 +136,17 @@ const FlyingFish = () => {
             },
             generateEpicenter: function (x, y, velocity) {
                 if (y < this.height / 2 - this.THRESHOLD || y > this.height / 2 + this.THRESHOLD) {
-                    return;
+                    return
                 }
                 var index = Math.round(x / this.pointInterval);
 
                 if (index < 0 || index >= this.points.length) {
-                    return;
+                    // console.log(1)
+                    return
                 }
-                // console.log(this)
-                // console.log(this.points[index])
-                this.points[index].interfere(y, velocity);
+
+                if (index < this.points.length)
+                    this.points[index].interfere(y, velocity);
             },
             reverseVertical: function () {
                 this.reverse = !this.reverse;
@@ -163,7 +170,7 @@ const FlyingFish = () => {
                 }
             },
             render: function () {
-                requestAnimationFrame(this.render);
+                rafId.current = requestAnimationFrame(this.render);
                 this.controlStatus();
                 this.context.clearRect(0, 0, this.width, this.height);
                 this.context.fillStyle = 'hsl(0, 0%, 95%)';
