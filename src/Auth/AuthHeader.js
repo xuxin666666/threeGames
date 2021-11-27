@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 import './Auth.scss'
 
-const Header = ({ logined }) => {
+const AuthHeader = ({ logined }) => {
     return (
         <div className='authHeader'>
             {
@@ -27,4 +27,4 @@ const Header = ({ logined }) => {
     )
 }
 
-export default Header
+export default AuthHeader

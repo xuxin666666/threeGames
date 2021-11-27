@@ -1,0 +1,86 @@
+.tanksWarMaps {
+    border-top: white 1px solid;
+    border-bottom: white 1px solid;
+    padding: 5px;
+    position: relative;
+    top: 20px;
+    height: calc(100% - 80px);
+
+    .icon {
+        color: white;
+        font-size: 30px;
+        margin-left: 10px;
+    }
+}
+
+.applyMap {
+    height: calc(100% - 40px);
+    width: 700px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: space-around;
+    span {
+        display: block;
+    }
+    .title {
+        color: white;
+        font-size: 24px;
+        position: absolute;
+        top: -5px;
+        // left: 330px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    img {
+        cursor: pointer;
+        border: gray 5px solid;
+    }
+    .imgLeftest {
+        height: 60%;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translate(-100%, -50%);
+        transition: 0.3s all ease;
+        opacity: 0.8;
+    }
+    .imgLeft {
+        height: 60%;
+        left: 30px;
+        opacity: 0.8;
+        @extend .tanksWarMpasImg;
+    }
+    .imgCurrent {
+        @extend .tanksWarMpasImg;
+        height: 80%;
+        left: 173px;
+        z-index: 1;
+    }
+    .imgRight {
+        height: 60%;
+        left: 410px;
+        opacity: 0.8;
+        @extend .tanksWarMpasImg;
+    }
+    .imgRightest {
+        height: 60%;
+        left: 100%;
+        position: absolute;
+        top: 50%;
+        transform: translate(100%, -50%);
+        transition: 0.3s all ease;
+        opacity: 0.8;
+    }
+}
+
+.tanksWarMpasImg {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);    
+    transition: 0.3s all ease;
+}
+

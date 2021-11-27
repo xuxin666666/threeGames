@@ -1,0 +1,71 @@
+@font-face {
+    font-family: 'tankswar';
+    src        : url('../font/PressStart2P-Regular.ttf');
+    font-weight: normal;
+    font-style : normal;
+}
+
+.tankswarOptions {
+    // border: 1px white solid;
+    width    : 500px;
+    height   : 240px;
+    position : relative;
+    top      : 30px;
+    left     : 50%;
+    transform: translateX(-50%);
+    color    : white;
+    font-size: 50px;
+
+    // text-align: center;
+    // font-family: 'tankswar';
+    .option {
+        position  : relative;
+        height    : 80px;
+        box-sizing: border-box;
+        cursor    : pointer;
+
+        .mode {
+            height     : 60px;
+            width      : 200px;
+            line-height: 56px;
+            box-sizing : content-box;
+            position   : absolute;
+            top        : 50%;
+            left       : 50%;
+            transform  : translate(-50%, -50%);
+            transition : all 0.3s ease-in-out;
+        }
+
+        .player {
+            // position: absolute;
+            visibility : hidden;
+            height     : 60px;
+            line-height: 56px;
+            float      : right;
+            font-size  : 30px;
+            transition : ease;
+
+            span {
+                margin: 0 12px;
+
+                &:hover {
+                    color: cyan;
+                }
+            }
+        }
+
+        &:hover {
+            .mode {
+                font-size: 40px;
+                left     : 22%;
+                top      : 40%;
+                color    : yellow;
+            }
+
+            .player {
+                visibility      : visible;
+                transition-delay: 0.3s;
+            }
+        }
+    }
+}

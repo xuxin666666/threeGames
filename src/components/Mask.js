@@ -24,7 +24,7 @@ const Mask = styled.div.attrs(props => ({
     z-index: ${props => props.zIndex};
     visibility: ${props => props.visible ? 'visible' : 'hidden'};
     display: ${props => props.display};
-    text-align: center;
+    /* text-align: center; */
     /* transition: all ease ${props => props.duration + 'ms'}; */
     >*{
         z-index: ${props => props.zIndex + 1};

@@ -1,5 +1,5 @@
 .minesweepHeader {
-    background-color: rgba($color: skyblue, $alpha: 0.5);
+    background-color: rgba($color: rgb(135, 206, 235), $alpha: 0.5);
     height          : 40px;
     width           : 100%;
     display         : inline-block;
@@ -14,42 +14,44 @@
         margin-left      : 20px;
     }
 
-    .menu {
-        display           : inline-flex;
-        height            : 100%;
-        // width: 300px;
-        position          : absolute;
-        left              : 40%;
-        transform         : translateX(-50%);
-        // margin-left: 20px;
-        align-items       : center;
-        // justify-content: space-between;
+    
+}
 
-        >div {
-            height     : 100%;
-            display    : inline-flex;
-            box-sizing : border-box;
-            align-items: center;
+.mineSweepMenu {
+    display           : inline-flex;
+    height            : 100%;
+    // width: 300px;
+    position          : absolute;
+    left              : 40%;
+    transform         : translateX(-50%);
+    // margin-left: 20px;
+    align-items       : center;
+    // justify-content: space-between;
+
+    >div {
+        height     : 100%;
+        display    : inline-flex;
+        box-sizing : border-box;
+        align-items: center;
+    }
+
+    span {
+        font-size  : 22px;
+        margin-left: 5px;
+    }
+
+    img {
+        height     : 32px;
+        margin     : 4px;
+        margin-left: 70px;
+
+        &:active {
+            transform: scale(0.95);
         }
+    }
 
-        span {
-            font-size  : 22px;
-            margin-left: 5px;
-        }
-
-        img {
-            height     : 32px;
-            margin     : 4px;
-            margin-left: 70px;
-
-            &:active {
-                transform: scale(0.95);
-            }
-        }
-
-        .pause {
-            cursor: pointer;
-        }
+    .pause {
+        cursor: pointer;
     }
 }
 
@@ -59,6 +61,7 @@
     height  : 300px;
     position: relative;
     user-select: none;
+    text-align: center;
 
     .bg {
         width      : 100%;

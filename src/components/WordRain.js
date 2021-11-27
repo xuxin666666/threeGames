@@ -15,7 +15,7 @@ const WordRain = ({ visible }) => {
 
     useEffect(() => {
         var vis = visible === false ? false : true
-        console.log(visible, vis, vis ? 'visible' : 'hidden')
+        // console.log(visible, vis, vis ? 'visible' : 'hidden')
         container.current.style.visibility = vis ? 'visible' : 'hidden'
     }, [visible])
 

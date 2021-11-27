@@ -1,19 +1,16 @@
 // mineSweep的菜单栏
-import { Link } from "react-router-dom"
-import { ArrowLeftOutlined } from "@ant-design/icons"
 import { useEffect, useRef, useState } from "react"
 import { Slider } from "antd"
-import store from "store"
 
-import Header from "../Auth/Header"
+import Header from "../components/Header"
 import Mask from '../components/Mask'
 import { useInterval } from '../hook/useInterval'
 import { playAudio } from "../utils"
 import './scss/Menu.scss'
 
 const Height = 16, Width = 30
-const Menu = ({state, dispatch, setStage}) => {
-    const {isBegin, isPause, isGameover, sound, timeStr, mine} = state
+const Menu = ({ state, dispatch, setStage }) => {
+    const { isBegin, isPause, isGameover, sound, timeStr, mine } = state
 
     const [maskVis, setMaskVis] = useState(false)
     const [soundImg, setSoundImg] = useState('sound.png')
@@ -23,7 +20,7 @@ const Menu = ({state, dispatch, setStage}) => {
     const imgSound = useRef() // 音量图片dom的ref
     const sliderTimeout = useRef() // 控制音量条显示出来的timeout
     const canBeNone = useRef(true) // 是否能接着进行下去
- 
+
     // 鼠标点击弹出框外，则隐藏遮罩
     useEffect(() => {
         function listenClick(e) {
@@ -32,7 +29,7 @@ const Menu = ({state, dispatch, setStage}) => {
             var right = maskContent.current.getBoundingClientRect().right, bottom = maskContent.current.getBoundingClientRect().bottom
             if (maskVis && maskContent.current && !(x >= left && y >= top && x <= right && y <= bottom)) {
                 setMaskVis(false)
-                dispatch({type: 'continue'})
+                dispatch({ type: 'continue' })
             }
         }
         window.addEventListener('click', listenClick)
@@ -47,7 +44,7 @@ const Menu = ({state, dispatch, setStage}) => {
             slider.current.style.display = 'block'
         }
         slider.current.onmouseleave = function () {
-            if(canBeNone.current)
+            if (canBeNone.current)
                 slider.current.style.display = 'none'
         }
         slider.current.onmousedown = function () {
@@ -57,9 +54,9 @@ const Menu = ({state, dispatch, setStage}) => {
 
     // 鼠标抬起时，判断是否隐藏音量条
     useEffect(() => {
-        function mouseup(e){
-            if(!canBeNone.current) playAudio('mineSweep', 'click.mp3', sound)
-            if(!slider.current.contains(e.target) && !imgSound.current.contains(e.target)) {
+        function mouseup(e) {
+            if (!canBeNone.current) playAudio('mineSweep', 'click.mp3', sound, true)
+            if (!slider.current.contains(e.target) && !imgSound.current.contains(e.target)) {
                 slider.current.style.display = 'none'
             }
             canBeNone.current = true
@@ -72,15 +69,15 @@ const Menu = ({state, dispatch, setStage}) => {
 
     // 开始/继续 计时
     useInterval(() => {
-        if(isBegin && !isPause && !isGameover){ 
-            dispatch({type: 'time'})
+        if (isBegin && !isPause && !isGameover) {
+            dispatch({ type: 'time' })
         }
     }, 1000)
 
     const pause = () => {
-        dispatch({type: 'pause'})
+        dispatch({ type: 'pause' })
         setMaskVis(true)
-        playAudio('mineSweep', 'click.mp3', sound)
+        playAudio('mineSweep', 'click.mp3', sound, true)
     }
 
     // 鼠标移入音量图片，则0.3s后显示音量条
@@ -102,46 +99,45 @@ const Menu = ({state, dispatch, setStage}) => {
         if (soundImg === 'sound.png') {
             clearTimeout(sliderTimeout.current)
             setSoundImg('nosound.png')
-            dispatch({type: 'sound', value: 0})
+            dispatch({ type: 'sound', value: 0 })
         } else {
             setSoundImg('sound.png')
-            dispatch({type: 'sound', value: 50})
-            playAudio('mineSweep', 'click.mp3', 50)
+            dispatch({ type: 'sound', value: 50 })
+            playAudio('mineSweep', 'click.mp3', 50, true)
         }
     }
 
     // 改变音量大小
     const soundChange = (val) => {
-        dispatch({type: 'sound', value: val})
-        if(val > 0) setSoundImg('sound.png')
+        dispatch({ type: 'sound', value: val })
+        if (val > 0) setSoundImg('sound.png')
         else setSoundImg('nosound.png')
     }
 
     // 关闭遮罩
     const closeMask = () => {
-        dispatch({type: 'continue'})
+        dispatch({ type: 'continue' })
         setMaskVis(false)
-        playAudio('mineSweep', 'click.mp3', sound)
+        playAudio('mineSweep', 'click.mp3', sound, true)
     }
 
     // 重新开始
     const restart = () => {
-        dispatch({type: 'reset', value: {sound}})
+        dispatch({ type: 'reset', value: { sound } })
         setStage(Array(Height).fill(Array(Width).fill({ type: 'common', isReverse: false })))
         closeMask()
     }
 
     // 查看得分记录
     const sheet = () => {
-        playAudio('mineSweep', 'click.mp3', sound)
+        playAudio('mineSweep', 'click.mp3', sound, true)
 
     }
 
     return (
         <>
-            <div className='minesweepHeader'>
-                <Link to={'/'} className="link" ><ArrowLeftOutlined /></Link>
-                <div className='menu'>
+            <Header background='rgba(135, 206, 235, 0.5)'>
+                <div className='mineSweepMenu'>
                     <div>
                         <img src='/assert/mineSweep/image/mine1.png' alt='img' />
                         <span>{mine}</span>
@@ -152,8 +148,7 @@ const Menu = ({state, dispatch, setStage}) => {
                     </div>
                     <img src='/assert/mineSweep/image/going.png' width='24' alt='img' className='pause' onClick={pause} />
                 </div>
-                <Header logined={store.get('login')} />
-            </div>
+            </Header>
             <Mask visible={maskVis} position="fixed" duration='300'>
                 <div className='mineMaskC' ref={maskContent}>
                     <img src='/assert/mineSweep/image/dialog_statistics_bg.png' alt='img' className='bg' />
@@ -176,8 +171,8 @@ const Menu = ({state, dispatch, setStage}) => {
                             />
                             <div ref={slider} className='slider'>
                                 <Slider
-                                    vertical 
-                                    value={sound} 
+                                    vertical
+                                    value={sound}
                                     onChange={soundChange}
                                 />
                             </div>

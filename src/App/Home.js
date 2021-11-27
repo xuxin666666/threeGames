@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom"
 
-import Header from "../Auth/Header"
+import AuthHeader from "../Auth/AuthHeader"
 import IslandAndStore from "../components/IslandAndStone";
 import Mask from "../components/Mask";
 import WordRain from "../components/WordRain";
@@ -59,7 +59,7 @@ const Home = () => {
         <div className="AnimateRoute">
             <header className="homeHeader">
                 <span onClick={controlScene}>切换场景</span>
-                <Header logined={false} />
+                <AuthHeader logined={false} />
             </header>
             {
                 scene === 1 ? (

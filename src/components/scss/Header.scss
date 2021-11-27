@@ -1,0 +1,16 @@
+.Header {
+    height          : 40px;
+    display         : inline-block;
+    width           : 100%;
+    z-index         : 10;
+    position        : relative;
+    -webkit-user-select: none;
+    user-select     : none;
+
+    .link {
+        font-size        : 30px;
+        line-height      : 40px;
+        vertical-align   : top;
+        margin-left      : 20px;
+    }
+}

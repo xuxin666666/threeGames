@@ -1,13 +1,10 @@
 // Tetris的主要逻辑和展示部分
 // 游戏的展示区（stage）和侧边栏操作区共用的状态太多了，所以就不分开了
 
-import store from 'store'
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { message } from 'antd'
-import { ArrowLeftOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
 
-import Header from "../Auth/Header"
+import Header from "../components/Header"
 import Display from './Display'
 import PaiMeng from '../components/PaiMeng'
 // import { useInterval, useEleInterval } from '../hook/useInterval'
@@ -311,13 +308,7 @@ const Tetris = () => {
 
     return (
         <div className='tetris'>
-
-            {/* <iframe src='/IslandAndStore/index.html' title='IslandAndStore' width='100%' height='100%' style={{position: 'fixed', top: '0', left: '0', border: 'none'}} /> */}
-            <div className='tetrisHeader'>
-                <Link to={'/'} className="link" ><ArrowLeftOutlined /></Link>
-                <Header logined={store.get('login')} />
-            </div>
-
+            <Header background='skyblue' />
 
             <div className='tetrisMain'>
                 <div className="tetrisContent">
