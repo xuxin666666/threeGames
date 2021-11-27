@@ -1,11 +1,11 @@
 // 选择游戏地图
 import store from 'store'
+import { Popconfirm } from 'antd'
 import { ExportOutlined } from '@ant-design/icons'
 import { useEffect, useRef, useState } from 'react'
 
 import { init, Water, Brick, Stone, Grass, Home, Player1, Player2 } from './partsOfMap'
 import './scss/Maps.scss'
-import { Popconfirm } from 'antd'
 
 
 const Maps = ({ setSelectMap, dispatch, state }) => {
@@ -15,6 +15,7 @@ const Maps = ({ setSelectMap, dispatch, state }) => {
     useEffect(() => {
         // 从localStorage中获取地图
         var maps = store.get('tetrisMap')
+        if(typeof maps !== 'object') return
         maps.forEach(item => {
             item.src[19][11] = 'player1'
             if (playerNum === 2) item.src[19][15] = 'player2'
