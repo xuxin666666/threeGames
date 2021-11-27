@@ -2,7 +2,7 @@
 import store from 'store'
 import { Popconfirm } from 'antd'
 import { ExportOutlined } from '@ant-design/icons'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { init, Water, Brick, Stone, Grass, Home, Player1, Player2 } from './partsOfMap'
 import './scss/Maps.scss'
@@ -112,6 +112,11 @@ function ApplyMap({ mapArr, dispatch, setUpdate }) {
 
     }, [mapArr])
 
+    const beginGame = useCallback(() => {
+        dispatch({ type: 'begin' })
+        dispatch({ type: 'map', value: mapArr[current].src })
+    }, [mapArr, current, dispatch])
+
     useEffect(() => { // 可以通过键盘选择地图
         function keydown(e) {
             if (e.keyCode === 37)
@@ -131,7 +136,7 @@ function ApplyMap({ mapArr, dispatch, setUpdate }) {
         return () => {
             window.removeEventListener('keydown', keydown)
         }
-    }, [len])
+    }, [len, beginGame])
 
     useEffect(() => {
         if(len > 0 && current >= len) setCurrent(current - 1)
@@ -143,10 +148,7 @@ function ApplyMap({ mapArr, dispatch, setUpdate }) {
     const right = () => {
         setCurrent(current + 1)
     }
-    const beginGame = () => {
-        dispatch({ type: 'begin' })
-        dispatch({ type: 'map', value: mapArr[current].src })
-    }
+    
 
     const deleteMap = () => {
         var title = mapImages[current].title,

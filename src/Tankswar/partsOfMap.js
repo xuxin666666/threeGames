@@ -330,9 +330,9 @@ class Player extends Tank { // 玩家
             this.audioDriving.currentTime = 1
     }
     keydown(e) {
-        for (let item in key_codes) {
-            if (e.keyCode === key_codes[item]) {
-                if (e.keyCode !== key_codes.space && e.keyCode !== key_codes.extraSpace) {
+        for (let item in this.keyCode) {
+            if (e.keyCode === this.keyCode[item]) {
+                if (e.keyCode !== this.keyCode.attack) {
                     this.audioDriving.play()
                     this.audioIdle.pause()
                 }
@@ -409,7 +409,7 @@ class Player extends Tank { // 玩家
         this.keyPressed = this.keyPressed.filter(item => {
             return item !== e.keyCode
         })
-        if (this.keyPressed.length === 0 || (this.keyPressed.length === 1 && this.keyPressed[0] === key_codes.space)) {
+        if (this.keyPressed.length === 0 || (this.keyPressed.length === 1 && this.keyPressed[0] === this.keyCode.attack)) {
             this.audioDriving.pause()
             this.audioIdle.play()
         }

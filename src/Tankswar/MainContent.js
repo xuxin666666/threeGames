@@ -676,19 +676,19 @@ const MainContent = ({ state, dispatch }) => {
                             <div className='mask'></div>
                             <div>
                                 <img src='/assert/tanksWar/image/UIViewWipe.bmp' alt='img' className='UIView' />
-                                <span>{enemyDestoried}</span>
+                                <div className='span'>{enemyDestoried}</div>
                             </div>
                             <div>
                                 <img src='/assert/tanksWar/image/UIViewIP.bmp' alt='img' className='UIView' />
                                 <img src='/assert/tanksWar/image/UIViewLife.bmp' alt='img' className='UIView' />
-                                <span>{player1Life}</span>
+                                <div className='span'>{player1Life}</div>
                             </div>
                             {
                                 playerNum === 2
                                     ? <div>
                                         <img src='/assert/tanksWar/image/UIViewIIP.bmp' alt='img' className='UIView' />
                                         <img src='/assert/tanksWar/image/UIViewLife.bmp' alt='img' className='UIView' />
-                                        <span>{player2Life}</span>
+                                        <div className='span'>{player2Life}</div>
                                     </div>
                                     : null
                             }

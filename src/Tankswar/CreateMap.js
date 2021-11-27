@@ -245,10 +245,10 @@ const CreateMap = () => {
             <div className='slide'>
                 <Link to='/tankswar'><ExportOutlined rotate={180} className='backIcon' /></Link>
                 <div ref={option} className='option'>
-                    <img src='/assert/tankswar/image/brick.bmp' className='imgDecoration' name='brick' alt='img' onClick={select} />
-                    <img src='/assert/tankswar/image/stone.bmp' name='stone' alt='img' onClick={select} />
-                    <img src='/assert/tankswar/image/grass.bmp' name='grass' alt='img' onClick={select} />
-                    <img src='/assert/tankswar/image/water.bmp' name='water' alt='img' onClick={select} />
+                    <img src='/assert/tanksWar/image/brick.bmp' className='imgDecoration' name='brick' alt='img' onClick={select} />
+                    <img src='/assert/tanksWar/image/stone.bmp' name='stone' alt='img' onClick={select} />
+                    <img src='/assert/tanksWar/image/grass.bmp' name='grass' alt='img' onClick={select} />
+                    <img src='/assert/tanksWar/image/water.bmp' name='water' alt='img' onClick={select} />
                 </div>
                 <div className='drawCont'>
                     <button onClick={randomDraw}>剩下的随机生成</button>

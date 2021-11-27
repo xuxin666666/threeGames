@@ -307,95 +307,98 @@ const Tetris = () => {
     }, [onKeyDown, clearMouseDown])
 
     return (
-        <div className='tetris'>
-            <Header background='skyblue' />
+        <div className='tetrisContain'>
+            <div className='tetris'>
+                <Header background='skyblue' />
 
-            <div className='tetrisMain'>
-                <div className="tetrisContent">
-                    {
-                        isStart
-                            ? isPause
-                                ? <div className='tetrisPaused'>
-                                    <img src='/assert/tetris/image/upcoming.png' alt="img" />
-                                    当前速度为：{speed.toFixed(1)}格/秒
-                                </div>
-                                : <div className='tetrisStage'>
-                                    <Display stage={stage} />
-                                </div>
-                            : <div className='tetrisPaused'>
-                                <img src='/assert/tetris/image/upcoming.png' alt="img" />
-                            </div>
-                    }
-                </div>
-                <div className='tetrisSlide'>
-                    <div className='nextBlock'>下一个方块</div>
-                    <div className="tetrisSlidePreview">
+                <div className='tetrisMain'>
+                    <div className="tetrisContent">
                         {
                             isStart
-                                ? <Display stage={next.tetri[0]} />
-                                : <div></div>
+                                ? isPause
+                                    ? <div className='tetrisPaused'>
+                                        <img src='/assert/tetris/image/upcoming.png' alt="img" />
+                                        当前速度为：{speed.toFixed(1)}格/秒
+                                    </div>
+                                    : <div className='tetrisStage'>
+                                        <Display stage={stage} />
+                                    </div>
+                                : <div className='tetrisPaused'>
+                                    <img src='/assert/tetris/image/upcoming.png' alt="img" />
+                                </div>
                         }
+                    </div>
+                    <div className='tetrisSlide'>
+                        <div className='nextBlock'>下一个方块</div>
+                        <div className="tetrisSlidePreview">
+                            {
+                                isStart
+                                    ? <Display stage={next.tetri[0]} />
+                                    : <div></div>
+                            }
 
-                    </div>
-                    <div className="start">
-                        <img
-                            src='/assert/tetris/image/pause.png'
-                            alt="img"
-                            title="点击开始游戏"
-                            ref={startBtn}
-                            onClick={startAndPause}
-                        />
-                    </div>
-                    <div className="operation">
-                        <div className="up">
-                            <img
-                                src='/assert/tetris/image/action.png'
-                                alt="img"
-                                onClick={() => operation.current('up')}
-                                onMouseDown={(e) => continueOpera('up', e)}
-                            />
-                            <div>W/&uarr;</div>
                         </div>
-
-                        <div className="middle">
-                            <div className="left">
+                        <div className="start">
+                            <img
+                                src='/assert/tetris/image/pause.png'
+                                alt="img"
+                                title="点击开始游戏"
+                                ref={startBtn}
+                                onClick={startAndPause}
+                            />
+                        </div>
+                        <div className="operation">
+                            <div className="up">
                                 <img
                                     src='/assert/tetris/image/action.png'
                                     alt="img"
-                                    onClick={() => operation.current('left')}
-                                    onMouseDown={(e) => continueOpera('left', e)}
+                                    onClick={() => operation.current('up')}
+                                    onMouseDown={(e) => continueOpera('up', e)}
                                 />
-                                <div>A/&larr;</div>
+                                <div>W/&uarr;</div>
                             </div>
 
-                            <div className="right">
+                            <div className="middle">
+                                <div className="left">
+                                    <img
+                                        src='/assert/tetris/image/action.png'
+                                        alt="img"
+                                        onClick={() => operation.current('left')}
+                                        onMouseDown={(e) => continueOpera('left', e)}
+                                    />
+                                    <div>A/&larr;</div>
+                                </div>
+
+                                <div className="right">
+                                    <img
+                                        src='/assert/tetris/image/action.png'
+                                        alt="img"
+                                        onClick={() => operation.current('right')}
+                                        onMouseDown={(e) => continueOpera('right', e)}
+                                    />
+                                    <div>D/&rarr;</div>
+                                </div>
+                            </div>
+
+                            <div className="down">
                                 <img
                                     src='/assert/tetris/image/action.png'
                                     alt="img"
-                                    onClick={() => operation.current('right')}
-                                    onMouseDown={(e) => continueOpera('right', e)}
+                                    onClick={() => operation.current('down')}
+                                    onMouseDown={(e) => continueOpera('down', e)}
                                 />
-                                <div>D/&rarr;</div>
+                                <div>S/&darr;</div>
                             </div>
                         </div>
-
-                        <div className="down">
-                            <img
-                                src='/assert/tetris/image/action.png'
-                                alt="img"
-                                onClick={() => operation.current('down')}
-                                onMouseDown={(e) => continueOpera('down', e)}
-                            />
-                            <div>S/&darr;</div>
-                        </div>
                     </div>
-                </div>
 
-                <div className='tetrisPaimeng'>
-                    <PaiMeng />
+                    <div className='tetrisPaimeng'>
+                        <PaiMeng />
+                    </div>
                 </div>
             </div>
         </div>
+
     )
 }
 
