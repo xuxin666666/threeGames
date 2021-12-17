@@ -51,7 +51,12 @@ const PageDetail = () => {
 
     useEffect(() => {
         setDetail(c => {
-            return { ...c, user_avatar: user.avatar }
+            return { 
+                ...c, 
+                user_avatar: c.username === user.username
+                    ? user.avatar
+                    : c.user_avatar
+            }
         })
     }, [user])
 

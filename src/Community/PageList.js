@@ -25,7 +25,6 @@ const ImgAvatars = [ // 头像列表
 
 const PageList = () => {
 
-    // const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [hasMore, setHasMore] = useState(true) // 是否还有更多帖子
     const [pageStart, setPageStart] = useState(1) // 从第几条数据开始请求
@@ -35,6 +34,10 @@ const PageList = () => {
 
     // 加载更多帖子
     const loadMoreData = useCallback((pageStart, prevData) => {
+        if(!store.get('login', false)) {
+            setHasMore(false)
+            return
+        }
         if (loading.current) return
 
         loading.current = true

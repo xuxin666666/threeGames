@@ -8,7 +8,7 @@ const loginStage = new Event('loginStage')
 const autoLogin = async () => {
     store.set('login', false)
     const { data: res } = await axios.get('/auth/auto')
-    if (res.status === 200) {
+    if (res && res.status === 200) {
         var user = {
             username: res.data.username,
             avatar: res.data.avatar

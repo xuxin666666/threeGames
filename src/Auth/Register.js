@@ -91,7 +91,7 @@ const Register = () => {
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
-                        登录
+                        注册
                     </Button>
                 </Form.Item>
             </Form>
