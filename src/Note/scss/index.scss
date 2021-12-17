@@ -1,0 +1,48 @@
+.Note {
+    position: absolute;
+    overflow: auto;
+    height: calc(100vh - 40px);
+    padding: 20px;
+    // min-width: 900px;
+
+    .anchor {
+        position: fixed;
+        height: calc(100vh - 60px);
+        bottom: 10px;
+    }
+
+    &,* {
+        &::-webkit-scrollbar {
+            /*滚动条整体样式*/
+            width : 8px;
+            /*高宽分别对应横竖滚动条的尺寸*/
+            height: 12px;
+        }
+    
+        &::-webkit-scrollbar-thumb {
+            /*滚动条里面小方块*/
+            border-radius   : 10px;
+            background-color: skyblue;
+            background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+        }
+    
+        &::-webkit-scrollbar-track {
+            /*滚动条里面轨道*/
+            box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+            background   : #ccc;
+            border-radius: 10px;
+        }
+    }
+
+    code {
+        // background-color: #f8f8f8;
+        // border: 0.5px solid #e7eaed;
+        // border-radius: 5px;
+    }
+
+    @media screen and (max-width:1000px) {
+        #anchor {
+            display: none;
+        }
+    }
+}

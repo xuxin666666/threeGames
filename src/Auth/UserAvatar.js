@@ -16,16 +16,16 @@ const ImgAvatars = [ // 头像列表
     '/assert/user/avatar_8.png',
 ]
 
-const UserAvatar = ({ size, index, shape, value, onChange }) => {
+const UserAvatar = ({ size, index, shape, onChange }) => {
     const [user, setUser] = useState(index || 0) // 表单中展示的头像
     const [visible, setVisible] = useState(false) // 弹出框的显示与否
     const tool = useRef()
 
     const triggerChange = (changedValue) => { // 更改传回表单的数据
         onChange?.(
-          changedValue
+            changedValue
         );
-      };
+    };
 
     const listenClick = useCallback( // 全局点击事件触发的函数
         (e) => {

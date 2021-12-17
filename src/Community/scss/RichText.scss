@@ -1,0 +1,18 @@
+.communityRichText {
+    border: gray 1px solid;
+    .w-e-toolbar {
+        background-color: #fcfcfc !important;
+        border-bottom: gray 1px solid !important;
+    }
+    .w-e-panel-container {
+        width: 390px !important;
+
+        span {
+            margin: 3px;
+            display: inline-block;
+        }
+    }
+    .eleImg {
+        width: 64px;
+    }
+}

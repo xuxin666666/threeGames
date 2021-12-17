@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom"
 import { ExportOutlined } from "@ant-design/icons"
-import store from "store"
 
-import AuthHeader   from "../Auth/AuthHeader"
+import AuthHeader from "../Auth/AuthHeader"
 import './scss/Header.scss'
 
 const Header = ({background, children}) => {
@@ -14,7 +13,7 @@ const Header = ({background, children}) => {
                 <ExportOutlined rotate={180} />
             </Link>
             {children}
-            <AuthHeader logined={store.get('login')} />
+            <AuthHeader/>
         </div>
     )
 }

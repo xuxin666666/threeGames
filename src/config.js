@@ -3,7 +3,9 @@ import expirePlugin from 'store/plugins/expire'
 import axios from 'axios'
 import { message } from 'antd'
 import { InfoCircleFilled } from '@ant-design/icons'
+import moment from 'moment'
 import 'antd/dist/antd.css'
+import 'moment/locale/zh-cn'
 
 var CONFIG = {
     _ServerURL: 'http://127.0.0.1:8000',
@@ -12,7 +14,8 @@ var CONFIG = {
         this.handleStore()
         this.handleMessage()
         this.handleAxios()
-        // this.handleHistory()
+        this.handleMoment()
+        // this.handleHistory() // useLocation(react-router-dom)
     },
     handleStore: function () {
         store.addPlugin(expirePlugin)
@@ -85,29 +88,38 @@ var CONFIG = {
         )
         axios.interceptors.response.use(
             response => {
+                if(response.data.status === 430) {
+                    store.set('login', false)
+                    message.error('登录状态失效，请重新登录')
+                }
                 return response
             },
             error => {
-                const code = error.response && error.response.status;
-                console.log(1)
-                if (code === 401) { // 请求要求用户的身份认证
-                    message.error("未登录")
-                } else if (code === 403) { // 服务器拒绝执行此请求
-                    message.error('权限不够')
-                } else if (code === 404) { // 服务器无法根据客户端的请求找到资源（网页）
-                    message.error('这里空空如也')
-                } else if (code === 430) { // active token失效，此处应当带着refresh token重新请求一次
+                // const code = error.response && error.response.status;
+                // console.log(1)
+                // if (code === 401) { // 请求要求用户的身份认证
+                //     message.error("未登录")
+                // } else if (code === 403) { // 服务器拒绝执行此请求
+                //     message.error('权限不够')
+                // } else if (code === 404) { // 服务器无法根据客户端的请求找到资源（网页）
+                //     message.error('这里空空如也')
+                // } else if (code === 430) { // active token失效，此处应当带着refresh token重新请求一次
 
-                } else if (code === 431) { // refresh token失效
-                    message.error('请重新登录')
-                } else if (code === 500) { // 服务器内部错误，无法完成请求
-                    message.error('服务繁忙')
-                } else { // 未知错误
-                    message.error('未知错误')
-                }
-                return Promise.reject(error)
+                // } else if (code === 431) { // refresh token失效
+                //     message.error('请重新登录')
+                // } else if (code === 500) { // 服务器内部错误，无法完成请求
+                //     message.error('服务繁忙')
+                // } else { // 未知错误
+                //     message.error('未知错误')
+                // }
+                // return Promise.reject(error)
+                // console.log(error)
+                return error
             }
         )
+    },
+    handleMoment: function() {
+        moment.locale('zh-cn')
     },
     handleHistory: function () {
         const _historyWrap = function (type) {

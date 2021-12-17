@@ -3,6 +3,8 @@
 
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { message } from 'antd'
+import axios from 'axios'
+import store from 'store'
 
 import Header from "../components/Header"
 import Display from './Display'
@@ -11,7 +13,7 @@ import PaiMeng from '../components/PaiMeng'
 import { useEleInterval } from '../hook/useInterval'
 import { randomTetrimino } from './Tetrimino'
 import './scss/index.scss'
-
+import Mask from '../components/Mask'
 
 
 // 获取新的方块，返回新的方块和一些其他信息
@@ -40,12 +42,15 @@ const Tetris = () => {
     const [speed, setSpeed] = useState(1.0) // 方块下落的速度：格/秒
     const [stage, setStage] = useState(Array.from(Array(Height), () => Array(Width).fill({ type: '0', moveable: true }))) // 地图
     const [score, setScore] = useState(0) // 得分
+    const [maskVis, setMaskVis] = useState(false)
+    const [showScores, setShowScores] = useState([])
 
     const startBtn = useRef() // 开始、暂停、继续 按钮的ref
     const timeCount = useRef(0) // 根据时长更新速度时，用以计时
     const mouseInterval = useRef() // 保存mousedown事件调用的函数的interval的id
     const mouseTimeout = useRef() // 保存mousedown事件调用的函数的timeout的id
     const operation = useRef() // 控制方块的操作函数置于此处
+    const maskContent = useRef() // 遮罩层的内容块
 
     // useInterval(() => { // 根据时长更新速度
     //     if (!isStart || isPause || isGameover) return
@@ -66,16 +71,61 @@ const Tetris = () => {
         }
     }, [score])
 
-
-
     useEleInterval(() => {
         if (isStart && !isPause && !isGameover) {
             drop()
         }
     }, 1000 / speed)
 
+    // 记录分数
+    const recordScore = useCallback(async (score) => {
+        setScore(0)
+        if(store.get("login")) { // 如果登录了，就把分数上传到服务器
+            const {data: res} = await axios.post("/tetris/postScores", {"scores": score})
+            if(res.status === 200) {
+                message.success("分数上传成功", 1)
+            } else {
+                message.error("分数上传失败", 1)
+            }
+        }
+
+        // 本地也存一份
+        var tetrisScores, currentTime = new Date().getTime()
+        var newScore = score + '`' + currentTime + "```", resScores = '', flag = true
+        if(!store.get('tetris', false)) {
+            resScores = newScore
+        } else {
+            tetrisScores = store.get('tetris')
+            var oneScore = tetrisScores.split("```"), s
+            if(oneScore.length - 1 < 5) {
+                for(let i = 0; i < oneScore.length - 1; i++) {
+                    s = oneScore[i].split('`')[0]
+                    if(parseInt(s) < score && flag) {
+                        resScores = resScores + newScore
+                        flag = false
+                    }
+                    resScores = resScores + oneScore[i] + '```'
+                }
+                if(flag) {
+                    resScores = resScores + newScore
+                }
+            } else {
+                for(let i = 0; i < oneScore.length - 1; i++) {
+                    s = oneScore[i].split('`')[0]
+                    if(flag && parseInt(s) < score) {
+                        resScores = resScores + newScore
+                        flag = false
+                    }
+                    if (flag || i < oneScore.length - 2) 
+                        resScores = resScores + oneScore[i] + '```'
+                }
+            }
+        }
+        store.set('tetris', resScores)
+    }, [])
+
     // 游戏结束了，做好收尾工作和准备下一局游戏
-    function gameover() {
+    const gameover = useCallback(() => {
         message.info('游戏结束')
         setIsGameover(true)
         setIsPause(false)
@@ -83,13 +133,13 @@ const Tetris = () => {
         setCur(getTetri())
         setNext(getTetri())
         setSpeed(1)
-        setScore(0)
         setStage(Array.from(Array(Height), () => Array(Width).fill({ type: '0', moveable: true })))
+        recordScore(score)
 
         timeCount.current = 0
         startBtn.current.src = '/assert/tetris/image/pause.png'
         startBtn.current.title = '点击开始游戏'
-    }
+    }, [recordScore, score])
 
     // 执行清除操作并计算得分
     const sweep = useCallback((stage) => {
@@ -214,7 +264,7 @@ const Tetris = () => {
                 setNext(getTetri())
             }
         }
-    }, [cur, next, checkEnable, updateStage, sweep])
+    }, [cur, next, checkEnable, updateStage, sweep, gameover])
 
     useEffect(() => {
         // 操作部分
@@ -306,11 +356,62 @@ const Tetris = () => {
         }
     }, [onKeyDown, clearMouseDown])
 
+    // 点击查看成绩
+    const sheetClick = useCallback((e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setMaskVis(c => !c)
+    }, [])
+
+    useEffect(() => {
+        function click(e){
+            if(!maskContent.current.contains(e.target)) {
+                setMaskVis(false)
+            }
+        }
+        window.addEventListener('click', click)
+        return () => {
+            window.removeEventListener('click', click)
+        }
+    }, [])
+
+    // 请求分数以展示
+    useEffect(() => {
+        if(!maskVis) return
+
+        async function postScores(){
+            var scores = store.get('tetris', '')
+            const {data:res} = await axios.post('/tetris/postScores/list', {scores})
+            if(res.status === 200) {
+                scores = res.data.scores
+                store.set('tetris', scores)
+            } else {
+                message.error("获取得分失败，正在展示本地数据")
+            }
+        }
+        if(store.get('login', false)) { // 如果登录了，先把数据传到服务器，再获取服务器合并后的数据
+            postScores()
+        }
+
+        var scores = store.get('tetris', ''), scoreArr = []
+        scoreArr = scores.split("```")
+        scoreArr.pop()
+        for(let i = 0; i < scoreArr.length; i++) {
+            scoreArr[i] = scoreArr[i].split("`")
+            scoreArr[i][1] = new Date(parseInt(scoreArr[i][1])).toLocaleDateString()
+        }
+        setShowScores(scoreArr)
+    }, [maskVis])
+
     return (
         <div className='tetrisContain'>
             <div className='tetris'>
-                <Header background='skyblue' />
-
+                <Header background='skyblue'>
+                    <div className="tetrisHeader">
+                        <div className="scoreBoard">{score}</div>
+                        <img src='/assert/tetris/image/sheetContent.png' alt='img' className='scores' onClick={sheetClick} />
+                    </div>
+                </Header>
                 <div className='tetrisMain'>
                     <div className="tetrisContent">
                         {
@@ -391,14 +492,27 @@ const Tetris = () => {
                             </div>
                         </div>
                     </div>
-
                     <div className='tetrisPaimeng'>
                         <PaiMeng />
                     </div>
                 </div>
+                <Mask visible={maskVis} opacity={0.01}>
+                    <div className='maskContent' ref={maskContent}>
+                        <div className='header'>您的得分</div>
+                        <div className="scoresBoard">
+                            {
+                                showScores.map((item, index) => 
+                                    <div key={index}>
+                                        <span>{item[0]}</span>
+                                        <span>{item[1]}</span>
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div>
+                </Mask>
             </div>
         </div>
-
     )
 }
 

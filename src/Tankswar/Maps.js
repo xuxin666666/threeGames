@@ -14,7 +14,7 @@ const Maps = ({ setSelectMap, dispatch, state }) => {
     const [update, setUpdate] = useState(0) // 控制是否要重新获取地图
     useEffect(() => {
         // 从localStorage中获取地图
-        var maps = store.get('tetrisMap')
+        var maps = store.get('tanksWarMap')
         if(typeof maps !== 'object') return
         maps.forEach(item => {
             item.src[19][11] = 'player1'
@@ -152,13 +152,13 @@ function ApplyMap({ mapArr, dispatch, setUpdate }) {
 
     const deleteMap = () => {
         var title = mapImages[current].title,
-            maps = store.get('tetrisMap')
+            maps = store.get('tanksWarMap')
         
         maps = maps.filter(item => {
             return item.title !== title
         })
         setUpdate(c => c + 1)
-        store.set('tetrisMap', maps)
+        store.set('tanksWarMap', maps)
         setVisible(false)
     }
 

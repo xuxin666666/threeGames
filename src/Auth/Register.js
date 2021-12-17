@@ -1,9 +1,9 @@
 // 注册界面
 import store from 'store'
+import axios from 'axios';
 import { useLayoutEffect } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { useHistory } from 'react-router-dom';
-
 
 import {User, Lock} from '../components/Icons'
 import UserAvatar from './UserAvatar'
@@ -14,14 +14,22 @@ const Register = () => {
     let history = useHistory()
 
     useLayoutEffect(() => {
-        if(store.get('login')) {
+        if(store.get('login') || store.get('register')) {
             history.goBack()
         }
     }, [history])
     
 
-    const onFinish = (values) => {
-        console.log('Success:', values);
+    const onFinish = async (values) => {
+        values.avatar = values.avatar.toString()
+        const {data} = await axios.post('/auth/register', values)
+        if(data.status === 200) {
+            message.success("注册成功")
+            store.set('register', true)
+            history.replace('/login')
+        } else {
+            message.error(`注册失败：${data.msg}`)
+        }
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -39,6 +47,7 @@ const Register = () => {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
+                validateTrigger="onBlur"
             >
                 <Form.Item
                     name="avatar"
@@ -63,7 +72,6 @@ const Register = () => {
                 >
                     <Input prefix={<User />} placeholder="username" />
                 </Form.Item>
-
                 <Form.Item
                     name="password"
                     rules={[
@@ -81,7 +89,6 @@ const Register = () => {
                 >
                     <Input.Password prefix={<Lock />} placeholder="password" />
                 </Form.Item>
-
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         登录

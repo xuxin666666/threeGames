@@ -22,6 +22,8 @@ import './App.scss'
 const Tetris = React.lazy(() => import('../Tetris'))
 const MineSweep = React.lazy(() => import('../Minesweep'))
 const TanksWar = React.lazy(() => import('../Tankswar'))
+const Community = React.lazy(() => import('../Community'))
+const Note = React.lazy(() => import('../Note'))
 
 const App = () => {
 
@@ -35,17 +37,17 @@ const App = () => {
 
     return (
         <BrowserRouter className="homePage">
-
             <Suspense fallback={
                 <div className='spin'>
                     <Spin size='large' />
                 </div>
             }>
-
                 <Switch>
-                    <Route path="/tetris" component={Tetris}></Route>
-                    <Route path="/minesweep" component={MineSweep}></Route>
-                    <Route path="/tankswar" component={TanksWar}></Route>
+                    <Route path="/tetris" component={Tetris} />
+                    <Route path="/minesweep" component={MineSweep} />
+                    <Route path="/tankswar" component={TanksWar} />
+                    <Route path="/community" component={Community} />
+                    <Route path='/note' component={Note} />
                     <Route path="/">
                         <AnimatedSwitch>
                             <Route path="/login" component={Login}></Route>

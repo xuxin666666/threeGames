@@ -15,7 +15,7 @@
         margin-left      : 20px;
     }
 
-    
+
 }
 
 .mineSweepMenu {
@@ -58,11 +58,12 @@
 
 .mineMaskC {
     // background-image: url('/assert/mineSweep/image/dialog_statistics_bg.png');
-    width   : 500px;
-    height  : 300px;
-    position: relative;
+    width      : 500px;
+    height     : 300px;
+    position   : relative;
     user-select: none;
-    text-align: center;
+    text-align : center;
+    overflow: hidden;
 
     .bg {
         width      : 100%;
@@ -92,27 +93,14 @@
         }
     }
 
-    .pause {
-        margin-top: 30px;
+    .menu {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        .pause {
+            margin-top: 30px;
 
-        &:active {
-            transform: scale(0.95);
-        }
-
-        cursor: pointer;
-    }
-
-    .icons {
-        display        : flex;
-        position       : relative;
-        justify-content: space-around;
-        margin-top     : 50px;
-
-        >* {
-            height: 60px;
-        }
-
-        img {
             &:active {
                 transform: scale(0.95);
             }
@@ -120,40 +108,101 @@
             cursor: pointer;
         }
 
-        .sheet {
-            position: relative;
+        .icons {
+            display        : flex;
+            position       : relative;
+            justify-content: space-around;
+            margin-top     : 50px;
 
-            &:active {
-                transform: scale(0.95);
+            >* {
+                height: 60px;
             }
 
             img {
-                top      : 50%;
-                left     : 50%;
-                transform: translate(-50%, -50%);
-                position : absolute;
-                height   : 66px;
+                &:active {
+                    transform: scale(0.95);
+                }
+
+                cursor: pointer;
             }
 
-            .sheetContent {
-                height: 36px;
-            }
-        }
-
-        .sound {
-            img {
-                height: 100%;
-            }
-
-            .slider {
-                height: 130px;
+            .sheet {
                 position: relative;
-                left: 8px;
-                top: -178px;
-                width: 50px;
-                padding: 10px 0 20px 10px;
-                display: none;
+
+                &:active {
+                    transform: scale(0.95);
+                }
+
+                img {
+                    top      : 50%;
+                    left     : 50%;
+                    transform: translate(-50%, -50%);
+                    position : absolute;
+                    height   : 66px;
+                }
+
+                .sheetContent {
+                    height: 36px;
+                }
+            }
+
+            .sound {
+                img {
+                    height: 100%;
+                }
+
+                .slider {
+                    height  : 130px;
+                    position: relative;
+                    left    : 8px;
+                    top     : -178px;
+                    width   : 50px;
+                    padding : 10px 0 20px 10px;
+                    display : none;
+                }
             }
         }
+    }
+    .scoresSheet {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform: translateX(100%);
+        z-index: -1;
+        padding: 30px 20px 10px 20px;
+        .header {
+            width: 100%;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: rgba($color: gray, $alpha: 1);
+            border-bottom: 2px dashed gray;
+            margin-bottom: 10px;
+        }
+        .scoresBoard {
+            text-align: center;
+            span {
+                margin: 3px 10px;
+                min-width: 80px;
+                display: inline-block;
+                font-size: 20px;
+                font-weight: 600;
+            }
+            .span1 {
+                color: white;
+            }
+            .span2 {
+                color: rgba($color: black, $alpha: 0.6);
+            }
+        }
+    }
+
+    .frameIn {
+        transform: translateX(0);
+        transition: 0.3s all ease;
+    }
+    .frameOut {
+        transition: 0.3s ease all;
+        transform: translateX(-100%);
     }
 }

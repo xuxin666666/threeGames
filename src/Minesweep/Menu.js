@@ -1,6 +1,9 @@
 // mineSweep的菜单栏
-import { useEffect, useRef, useState } from "react"
+import axios from 'axios'
+import store from 'store'
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Slider } from "antd"
+import { message } from "antd"
 
 import Header from "../components/Header"
 import Mask from '../components/Mask'
@@ -14,12 +17,15 @@ const Menu = ({ state, dispatch, setStage }) => {
 
     const [maskVis, setMaskVis] = useState(false)
     const [soundImg, setSoundImg] = useState('sound.png')
+    const [scoreList, setScoreList] = useState([])
 
     const maskContent = useRef() // 遮罩dom的ref
     const slider = useRef() // 音量条dom的ref
     const imgSound = useRef() // 音量图片dom的ref
     const sliderTimeout = useRef() // 控制音量条显示出来的timeout
     const canBeNone = useRef(true) // 是否能接着进行下去
+    const Menus = useRef()
+    const Sheet = useRef()
 
     // 鼠标点击弹出框外，则隐藏遮罩
     useEffect(() => {
@@ -30,6 +36,8 @@ const Menu = ({ state, dispatch, setStage }) => {
             if (maskVis && maskContent.current && !(x >= left && y >= top && x <= right && y <= bottom)) {
                 setMaskVis(false)
                 dispatch({ type: 'continue' })
+                Menus.current.classList.remove('frameOut')
+                Sheet.current.classList.remove('frameIn')
             }
         }
         window.addEventListener('click', listenClick)
@@ -119,6 +127,8 @@ const Menu = ({ state, dispatch, setStage }) => {
         dispatch({ type: 'continue' })
         setMaskVis(false)
         playAudio('mineSweep', 'click.mp3', sound, true)
+        Menus.current.classList.remove('frameOut')
+        Sheet.current.classList.remove('frameIn')
     }
 
     // 重新开始
@@ -129,10 +139,35 @@ const Menu = ({ state, dispatch, setStage }) => {
     }
 
     // 查看得分记录
-    const sheet = () => {
+    const sheet = useCallback(() => {
         playAudio('mineSweep', 'click.mp3', sound, true)
+        Menus.current.classList.add('frameOut')
+        Sheet.current.classList.add('frameIn')
 
-    }
+        async function postScores(){
+            var scores = store.get('mineSweep', '')
+            const {data:res} = await axios.post('/mineSweep/postScores/list', {scores})
+            if(res.status === 200) {
+                scores = res.data.scores
+                store.set('mineSweep', scores)
+            } else {
+                message.error("获取得分失败，正在展示本地数据")
+            }
+        }
+
+        var scores = store.get('mineSweep', ''), scoreArr = []
+        if(store.get('login', false)) { // 如果登录了，先把数据传到服务器，再获取服务器合并后的数据
+            postScores()
+        }
+        scoreArr = scores.split("```")
+        scoreArr.pop()
+        for(let i = 0; i < scoreArr.length; i++) {
+            scoreArr[i] = scoreArr[i].split("`")
+            scoreArr[i][0] = showTime(parseInt(scoreArr[i][0]))
+            scoreArr[i][1] = new Date(parseInt(scoreArr[i][1])).toLocaleDateString()
+        }
+        setScoreList(scoreArr)
+    }, [sound])
 
     return (
         <>
@@ -153,36 +188,57 @@ const Menu = ({ state, dispatch, setStage }) => {
                 <div className='mineMaskC' ref={maskContent}>
                     <img src='/assert/mineSweep/image/dialog_statistics_bg.png' alt='img' className='bg' />
                     <button className='close' onClick={closeMask}>╳</button>
-                    <img src="/assert/mineSweep/image/pause.png" alt='img' className='pause' onClick={closeMask} />
-                    <div className='icons'>
-                        <img src='/assert/mineSweep/image/restart.png' alt='img' onClick={restart} />
-                        <div className='sheet' onClick={sheet}>
-                            <img src='/assert/mineSweep/image/sheet.png' alt='img' />
-                            <img src='/assert/mineSweep/image/sheetContent.png' alt='img' className='sheetContent' />
-                        </div>
-                        <div className='sound'>
-                            <img
-                                src={'/assert/mineSweep/image/' + soundImg}
-                                alt='img'
-                                onMouseEnter={soundMouseEnter}
-                                onMouseLeave={soundMouseLeave}
-                                onClick={soundClick}
-                                ref={imgSound}
-                            />
-                            <div ref={slider} className='slider'>
-                                <Slider
-                                    vertical
-                                    value={sound}
-                                    onChange={soundChange}
-                                />
+                    <div className='menu' ref={Menus}>
+                        <img src="/assert/mineSweep/image/pause.png" alt='img' className='pause' onClick={closeMask} />
+                        <div className='icons'>
+                            <img src='/assert/mineSweep/image/restart.png' alt='img' onClick={restart} />
+                            <div className='sheet' onClick={sheet}>
+                                <img src='/assert/mineSweep/image/sheet.png' alt='img' />
+                                <img src='/assert/mineSweep/image/sheetContent.png' alt='img' className='sheetContent' />
                             </div>
-
+                            <div className='sound'>
+                                <img
+                                    src={'/assert/mineSweep/image/' + soundImg}
+                                    alt='img'
+                                    onMouseEnter={soundMouseEnter}
+                                    onMouseLeave={soundMouseLeave}
+                                    onClick={soundClick}
+                                    ref={imgSound}
+                                />
+                                <div ref={slider} className='slider'>
+                                    <Slider
+                                        vertical
+                                        value={sound}
+                                        onChange={soundChange}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='scoresSheet' ref={Sheet}>
+                        <div className='header'>您的得分</div>
+                        <div className="scoresBoard">
+                            {
+                                scoreList.map((item, index) => 
+                                    <div key={index}>
+                                        <span className='span1'>{item[0]}</span>
+                                        <span className='span2'>{item[1]}</span>
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
                 </div>
             </Mask>
         </>
     )
+}
+
+function showTime(time) {
+    var second = time % 60, minute = (time - second) / 60
+    if (second / 10 < 1) second = '0' + second
+    if (minute / 10 < 1) minute = '0' + minute
+    return minute + ':' + second
 }
 
 export default Menu

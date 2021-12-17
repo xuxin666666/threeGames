@@ -8,6 +8,46 @@
     user-select: none;
     min-width  : 800px;
 
+    .tetrisHeader {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: space-between;
+        height: 100%;
+        width: 200px;
+        // margin-left: 200px;
+        float: right;
+        right: 300px;
+        position: absolute;
+
+        .scoreBoard {
+            background: rgba($color: gray, $alpha: 0.6);
+            border-radius: 3px;
+            width: 100px;
+            height: 30px;
+            margin-top: 5px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+            line-height: 30px;
+        }
+    
+        .scores {
+            border-radius: 10px;
+            width: 36px;
+            height: 36px;
+            margin-top: 2px;
+            transition: 0.3s all ease;
+            &:hover {
+                background: rgba($color: red, $alpha: 0.3);
+            }
+            &:active {
+                background: red;
+                transform: scale(0.95);
+            }
+        }
+    }
+
     .tetrisMain {
         // height: 540px;
         width           : 540px;
@@ -217,6 +257,34 @@
         // right: 10px;
         left    : 580px;
         bottom  : 10%;
+    }
+
+    .maskContent {
+        width: 600px;
+        height: 400px;
+        padding: 20px;
+        border: 2px gray solid;
+        backdrop-filter: blur(30px);
+        color: rgba($color: gray, $alpha: 0.8);
+        font-size: 24px;
+        border-radius: 10px;
+        .header {
+            width: 100%;
+            text-align: center;
+            font-size: 30px;
+            font-weight: 800;
+            color: rgba($color: gray, $alpha: 1);
+            border-bottom: 2px dashed gray;
+            margin-bottom: 30px;
+        }
+        .scoresBoard {
+            text-align: center;
+            span {
+                margin: 5px 10px;
+                min-width: 80px;
+                display: inline-block;
+            }
+        }
     }
 
     @media screen and (min-width: 900px) {

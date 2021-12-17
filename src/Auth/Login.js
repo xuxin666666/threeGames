@@ -1,22 +1,31 @@
 // 登陆界面
 import store from 'store'
-import { Form, Input, Button, Checkbox } from 'antd';
-import {Link} from 'react-router-dom'
+import axios from 'axios';
+import { Form, Input, Button, Checkbox, message } from 'antd';
+import {Link, useHistory} from 'react-router-dom'
 
 import {User, Lock} from '../components/Icons'
 import './Auth.scss'
 
 const Login = () => {
+    let history = useHistory()
 
-
-    const asd = () => {
-        var l = store.get('login')
-        console.log(l)
-        store.set('login', !l)
-    }
-
-    const onFinish = (values) => { // 表单验证成功了
-        console.log('Success:', values);
+    const onFinish = async (values) => { // 表单验证成功了
+        const {data: res} = await axios.post("/auth", values)
+        if(res.status === 200) {
+            var user = {
+                "username": values.username,
+                "avatar": res.data.avatar
+            }
+            store.set("user", user)
+            store.set("auto_login", values.auto_login, new Date().getTime() + 1000 * 60 * 60 * 24 * 30)
+            store.set("login", true)
+            store.set("token", "Bearer " + res.data.token)
+            message.success("登录成功")
+            history.goBack()
+        } else {
+            message.error(`登录失败：${res.msg}`)
+        }
     };
 
     const onFinishFailed = (errorInfo) => { // 验证失败
@@ -30,7 +39,6 @@ const Login = () => {
 
     return (
         <div className="AnimateRoute">
-        <button onClick={asd}>haha</button>
             <Form
                 className="loginForm"
                 initialValues={{
@@ -39,6 +47,7 @@ const Login = () => {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
+                validateTrigger="onBlur"
             >
                 <Form.Item
                     name="username"
@@ -76,11 +85,9 @@ const Login = () => {
                     <Input.Password prefix={<Lock />} placeholder="password" />
                 </Form.Item>
 
-                <Form.Item
-                    
-                >   
+                <Form.Item>   
                     <Form.Item
-                        name="remember"
+                        name="auto_login"
                         valuePropName="checked"
                         noStyle
                     >

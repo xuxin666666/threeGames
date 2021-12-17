@@ -11,13 +11,18 @@
     "antd": "^4.16.13",
     "axios": "^0.21.4",
     "caniuse-lite": "^1.0.30001271",
+    "highlight.js": "^11.3.1",
+    "marked": "^4.0.7",
+    "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-animated-router": "^0.2.4",
     "react-dom": "^17.0.2",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "store": "^2.0.12",
     "styled-components": "^5.3.1",
+    "wangeditor": "^4.7.10",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

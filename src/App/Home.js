@@ -76,6 +76,15 @@ const Home = () => {
             <div className="homeContent">
                 <p>话不多说</p>
                 <span onClick={showMask}>开始游玩</span>
+                <p style={{marginTop: '20px'}}>
+                    <Link to='/community'>
+                        社区
+                    </Link>
+                </p>
+            </div>
+
+            <div className='homeNote'>
+                <Link to='/note'>一些笔记</Link>
             </div>
 
             <Mask width="50%" height="60%" opacity={0.4} className="homeMask" ref={maskRef} display={maskDisplay}>
@@ -98,7 +107,7 @@ const Home = () => {
                     </div>
                     <div>
                         <img src="/assert/tanksWar/image/button.png" width="100%" height="100%" alt="tankswar" />
-                        <Link to="tankswar">
+                        <Link to="/tankswar">
                             <Mask position="relative" className="homeButtonMask">
                                 坦克大战
                             </Mask>

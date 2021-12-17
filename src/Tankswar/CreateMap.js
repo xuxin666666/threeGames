@@ -205,11 +205,11 @@ const CreateMap = () => {
     }
 
     function save() {
-        var maps = store.get('tetrisMap')
+        var maps = store.get('tanksWarMap')
         // console.log(typeof maps)
         if (typeof maps !== 'object') {
             maps = [{ title: title, src: mapArr }]
-            store.set('tetrisMap', maps)
+            store.set('tanksWarMap', maps)
             setVisible(false)
             message.success('保存地图成功')
         } else {
@@ -221,7 +221,7 @@ const CreateMap = () => {
                 message.warn('请不要与已有的地图重名')
             } else {
                 maps.push({ title: title, src: mapArr })
-                store.set('tetrisMap', maps)
+                store.set('tanksWarMap', maps)
                 setVisible(false)
                 message.success('保存地图成功')
             }

@@ -1,4 +1,6 @@
 // mineSweep的主要游戏内容区
+import axios from "axios"
+import store from "store"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import { CeilCommon, CeilDark, CeilNotReverse, CeilFlag, CeilMine } from './Ceil'
@@ -8,7 +10,7 @@ import { message } from "antd"
 
 const Width = 30, Height = 16, MineNumber = 99
 const MainContent = ({ state, dispatch, callback }) => {
-    const { isBegin, isGameover, sound } = state
+    const { isBegin, isGameover, sound, time } = state
 
     const [stage, setStage] = useState(Array(Height).fill(Array(Width).fill({ type: 'common', isReverse: false })))
 
@@ -128,7 +130,7 @@ const MainContent = ({ state, dispatch, callback }) => {
 
     // 游戏获胜
     const win = (stage, remainMines) => { 
-        recordScore()
+        recordScore(time)
         remainMines.forEach(item => {
             stage[item[0]][item[1]].isReverse = true
         })
@@ -146,9 +148,50 @@ const MainContent = ({ state, dispatch, callback }) => {
     }
 
     // 记录分数
-    const recordScore = () => {
+    const recordScore = useCallback(async (score) => {
+        if(store.get("login")) { // 如果登录了，就把分数上传到服务器
+            const {data: res} = await axios.post("/mineSweep/postScores", {"scores": score})
+            if(res.status === 200) {
+                message.success("分数上传成功", 1)
+            } else {
+                message.error("分数上传失败", 1)
+            }
+        }
 
-    }
+        // 本地也存一份
+        var tetrisScores, currentTime = new Date().getTime()
+        var newScore = score + '`' + currentTime + "```", resScores = '', flag = true
+        if(!store.get('mineSweep', false)) {
+            resScores = newScore
+        } else {
+            tetrisScores = store.get('mineSweep', '')
+            var oneScore = tetrisScores.split("```"), s
+            if(oneScore.length - 1 < 5) {
+                for(let i = 0; i < oneScore.length - 1; i++) {
+                    s = oneScore[i].split('`')[0]
+                    if(parseInt(s) > score && flag) {
+                        resScores = resScores + newScore
+                        flag = false
+                    }
+                    resScores = resScores + oneScore[i] + '```'
+                }
+                if(flag) {
+                    resScores = resScores + newScore
+                }
+            } else {
+                for(let i = 0; i < oneScore.length - 1; i++) {
+                    s = oneScore[i].split('`')[0]
+                    if(flag && parseInt(s) > score) {
+                        resScores = resScores + newScore
+                        flag = false
+                    }
+                    if (flag || i < oneScore.length - 2) 
+                        resScores = resScores + oneScore[i] + '```'
+                }
+            }
+        }
+        store.set('mineSweep', resScores)
+    }, [])
 
     // 鼠标按下，深色显示
     const mousedown = (e) => {

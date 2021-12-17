@@ -78,6 +78,16 @@
     }
 }
 
+.homeNote {
+    font-size: 20px;
+    position: absolute;
+    right: 30px;
+    bottom: 100px;
+    * {
+        color: lightgreen;
+    }
+}
+
 .homeMask {
     transition   : all 0.5s ease;
     // visibility: hidden;

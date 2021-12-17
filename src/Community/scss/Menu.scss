@@ -1,0 +1,31 @@
+.communityMenu {
+    display: inline-block;
+    position: absolute;
+    right: 150px;
+    // width: 100%;
+
+    .publish {
+        padding: 0 5px;
+        height: 32px;
+        margin-top: 4px;
+        color: #663c00;
+        background-color: #ffe14c;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: 600;
+        -webkit-transition: .2s background-color;
+        -o-transition: .2s background-color;
+        transition: .2s background-color;
+        display: inline-block;
+        cursor: pointer;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        &:active {
+            background-color: rgba($color: #ffe14c, $alpha: 0.9);
+        }
+        span {
+            margin: 0 5px;
+        }
+    }
+}

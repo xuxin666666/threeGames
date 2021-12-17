@@ -1,0 +1,19 @@
+.communityCreatePage {
+    margin-top: 10px;
+    height: 100%;
+
+    .createPageForm {
+        .submit {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+
+    .ant-card-head-title {
+        font-weight: 800;
+        font-size: 18px;
+        padding: 10px 0;
+    }
+    
+}
