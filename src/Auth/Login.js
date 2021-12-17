@@ -11,6 +11,7 @@ const Login = () => {
     let history = useHistory()
 
     const onFinish = async (values) => { // 表单验证成功了
+        console.log(values)
         const {data: res} = await axios.post("/auth", values)
         if(res.status === 200) {
             var user = {
@@ -42,7 +43,7 @@ const Login = () => {
             <Form
                 className="loginForm"
                 initialValues={{
-                    remember: true,
+                    auto_login: true,
                 }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
